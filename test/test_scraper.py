@@ -6,11 +6,6 @@ from scrapers.scraper import parse_html
 
 class TestParseFunction(unittest.TestCase):
 
-    # def setUp(self):
-    #     with open('test/test.html', encoding='utf-8') as f:
-    #         html = f.read()
-    #         self.output = parse_html(html)
-
     @patch('scrapers.scraper.get_load_time')
     def setUp(self, mock_get_load_time):
         mock_get_load_time.return_value = 'mocked!'

@@ -2,7 +2,12 @@ import datetime
 from itertools import repeat
 from time import sleep, time
 from multiprocessing import Pool, cpu_count
+import concurrent.futures
+import requests
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from scrapers.scraper import get_driver, connect_to_base, \
     parse_html, write_to_file
 
@@ -21,15 +26,23 @@ def run_process(page_number, filename):
 
 
 if __name__ == '__main__':
-    # set variables
     start_time = time()
     output_timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    output_filename = f'output_{output_timestamp}.csv'
-    # scrape and crawl
-    with Pool(cpu_count()-1) as p:
-        p.starmap(run_process, zip(range(1, 21), repeat(output_filename)))
-    p.close()
-    p.join()
+    output_filename = f"output_{output_timestamp}.csv"
+    
+    futures = []
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        for page in range(1, 21):
+                futures.append(
+                    executor.submit(run_process, page_number=page, filename=output_filename)
+                )
+    for future in concurrent.futures.as_completed(futures):
+        try:
+            print(future.result())
+        except requests.ConnectTimeout:
+            print("ConnectTimeout.")
+    
     end_time = time()
     elapsed_time = end_time - start_time
     print(f'Elapsed run time: {elapsed_time} seconds')

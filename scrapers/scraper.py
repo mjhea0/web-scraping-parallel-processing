@@ -50,28 +50,28 @@ def parse_html(html):
     # parse soup object to get article id, rank, score, and title
     tr_blocks = soup.find_all('tr', class_='athing')
     article = 0
-    for tr in tr_blocks:
-        article_id = tr.get('id')
-        article_url = tr.find_all('a')[1]['href']
-        # check if article is a hacker news article
-        if 'item?id=' in article_url:
-            article_url = f'https://news.ycombinator.com/{article_url}'
-        load_time = get_load_time(article_url)
-        try:
-            score = soup.find(id=f'score_{article_id}').string
-        except Exception as ex:
-            score = '0 points'
-        article_info = {
-            'id': article_id,
-            'load_time': load_time,
-            'rank': tr.span.string,
-            'score': score,
-            'title': tr.find(class_='storylink').string,
-            'url': article_url
-        }
-        # appends article_info to output_list
-        output_list.append(article_info)
-        article += 1
+    # for tr in tr_blocks:
+    #     article_id = tr.get('id')
+    #     article_url = tr.find_all('a')[1]['href']
+    #     # check if article is a hacker news article
+    #     if 'item?id=' in article_url:
+    #         article_url = f'https://news.ycombinator.com/{article_url}'
+    #     load_time = get_load_time(article_url)
+    #     try:
+    #         score = soup.find(id=f'score_{article_id}').string
+    #     except Exception as ex:
+    #         score = '0 points'
+    #     article_info = {
+    #         'id': article_id,
+    #         'load_time': load_time,
+    #         'rank': tr.span.string,
+    #         'score': score,
+    #         'title': tr.find(class_='storylink').string,
+    #         'url': article_url
+    #     }
+    #     # appends article_info to output_list
+    #     output_list.append(article_info)
+    #     article += 1
     return output_list
 
 
