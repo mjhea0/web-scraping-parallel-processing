@@ -1,5 +1,7 @@
 import datetime
+from itertools import repeat
 from time import sleep, time
+from multiprocessing import Pool, cpu_count
 
 from scrapers.scraper import get_driver, connect_to_base, \
     parse_html, write_to_file
@@ -10,6 +12,10 @@ def run_process(page_number, filename, browser):
         sleep(2)
         html = browser.page_source
         output_list = parse_html(html)
+
+        ########
+        # here #
+        ########
         write_to_file(output_list, filename)
     else:
         print('Error connecting to hackernews')
@@ -26,6 +32,10 @@ if __name__ == '__main__':
     while current_page <= 20:
         print(f'Scraping page #{current_page}...')
         run_process(current_page, output_filename, browser)
+
+        ########
+        # here #
+        ########
         current_page = current_page + 1
     # exit
     browser.quit()
