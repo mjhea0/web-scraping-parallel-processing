@@ -1,13 +1,8 @@
 import datetime
-from itertools import repeat
 from time import sleep, time
-from multiprocessing import Pool, cpu_count
 import concurrent.futures
 import requests
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from scrapers.scraper import get_driver, connect_to_base, \
     parse_html, write_to_file
 
